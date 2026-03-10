@@ -5,7 +5,7 @@ API: https://dog.ceo/api
 // 1- SELECIONAR ELEMENTOS DO HTML
 
 //PEGA A IMAGEM DO CACHORRO
-const dogImage = document.getElementById('docImage');
+const dogImage = document.getElementById('dogImage');
 //elemento onde aparece o nome da raça
 const breedName = document.getElementById('breedName');
 //BOTÃO QUE BUSCA CACHORRO ALEATÓRIO
@@ -13,7 +13,7 @@ const randomBtn = document.getElementById('randomBtn')
 //BOTÃO QUE BUSCA RAÇA
 const searchBtn = document.getElementById('searchBtn')
 //CAMPO DE INPUT ONDE O USUÁRIO DIGITA A RAÇA
-const breedIpnut = document.getElementById('breadIpnut');
+const breedIpnut = document.getElementById('breedInput');
 //ÁREA ONDE A IMAGEM APARECE
 const dogArea = document.querySelector('.dog-area');
 //========================================================
@@ -81,3 +81,46 @@ async function fetchFromApi(endpoint) {
     }
 }
 fetchFromApi("/breeds/image/random");
+
+//====-===================================================
+// 4- FUNÇÃO DE AÇÃO 
+//========================================================
+
+function getrandomDog() {
+    fetchFromApi("/breeds/image/random");
+}
+
+//BUSCAR CACHORRO POR RAÇA
+function getbreed() {
+    //pega o valor do input
+    let breed = breedIpnut.value.trim().toLowerCase();
+    
+    if (breed === "") {
+        alert("Digite uma raça de cachorro");
+        return;
+    }
+    //CHAMA A API COM A RAÇA DIGITADA
+    fetchFromApi(`/breed/${breed}/images/random`); 
+}
+
+//========================================================
+// 5- EVENTOS
+//========================================================
+
+//click no botão de cachorro aleatório
+randomBtn.addEventListener("click", getrandomDog);
+
+//click no botão de busca por raça
+searchBtn.addEventListener("click", getbreed);
+
+//clique na imagem gera um cachorro aleatório
+dogImage.addEventListener("click", getrandomDog);
+
+//enter dentro do input gera um cachorro da raça digitada
+breedIpnut.addEventListener("keypress", function(event) {
+    if (event.key === "Enter") {
+        getbreed();
+    }
+});
+getrandomDog();
+
